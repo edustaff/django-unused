@@ -1,0 +1,7 @@
+[run]
+source = django_unused
+;branch = True
+;
+[report]
+show_missing = True
+omit =
