@@ -20,7 +20,7 @@ def find_app_templates():
                 for file in files:
                     template = os.path.join(root, file)
                     template_files.append(template)
-                    templates.append(template.replace(dir, '')[1:])
+                    templates.append(template.replace(dir, '').replace('\\', '/')[1:])
     return template_files, templates
 
 
@@ -34,7 +34,7 @@ def find_global_templates():
                     for file in files:
                         template = os.path.join(root, file)
                         template_files.append(template)
-                        templates.append(template.replace(dir, '')[1:])
+                        templates.append(template.replace(dir, '').replace('\\', '/')[1:])
     return template_files, templates
 
 
@@ -45,13 +45,13 @@ def find_py_files():
         if config.path.find(settings.BASE_DIR) > -1:
             dir = config.path
             for root, dirs, files in os.walk(dir):
-                if 'example/server/tests' in root:  # todo: don't hard code?
+                if os.path.join('example', 'server', 'tests') in root:  # todo: don't hard code?
                     print('excluding: {}'.format(root))
                     continue
                 for file in files:
                     filename, extension = os.path.splitext(file)
                     if extension[1:] in python_extensions:
-                        print(['py_files', file])
+                        # print(['py_files', file])
                         template = os.path.join(root, file)
                         py_files.append(template)
                         pys.append(template.replace(dir, '')[1:])
