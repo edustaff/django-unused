@@ -1,2 +1,2 @@
-# django-unused-templates
-Lists all unused templates in Django
+# django-unused
+Lists all unused templates, views, or media in a Django project.
