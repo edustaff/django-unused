@@ -26,4 +26,4 @@ class UnusedTemplateTestCase(TestCase):
         self.assertEqual(len(py_files), 9)
 
     def test_run_unusedtemplates_with_no_args(self):
-        unused_templates = call_command('unusedtemplates')
+        call_command('unusedtemplates')
