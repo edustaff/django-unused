@@ -1,7 +1,7 @@
 from django.core.management import call_command
 from django.test import TestCase
 
-from django_unused.unused import find_app_templates, find_global_templates, find_py_files
+from django_unused.unused.find_templates import find_app_templates, find_global_templates, find_py_files
 
 
 class UnusedTemplateTestCase(TestCase):
@@ -26,4 +26,4 @@ class UnusedTemplateTestCase(TestCase):
         self.assertEqual(len(py_files), 9)
 
     def test_run_unusedtemplates_with_no_args(self):
-        call_command('unusedtemplates')
+        call_command('unused templates')

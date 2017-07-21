@@ -1,5 +1,5 @@
-import os, fileinput
-from ...unused import find_py_files, find_app_templates, find_global_templates
+import fileinput
+from ...unused.find_templates import find_py_files, find_app_templates, find_global_templates
 
 
 def find_unused_templates():
