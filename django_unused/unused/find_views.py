@@ -11,7 +11,7 @@ def get_view_files():
     Only checks user-created apps in INCLUDED_APPS.
     Adds the BASE_DIR to the beginning of the path so that searching for subclasses will return all subclasses.
     """
-    view_files = []
+    # view_files = []
     view_file_paths = []
     # Get app configs
     for config in apps.get_app_configs():
@@ -24,15 +24,13 @@ def get_view_files():
                         for filename in sub_filenames:
                             if filename.endswith('.py'):
                                 # view_files.append(filename)
-                                view_file_paths.append(os.path.join(
-                                                                    os.path.relpath(os.path.join('../', sub_root)),
+                                view_file_paths.append(os.path.join(os.path.relpath(os.path.join('../', sub_root)),
                                                                     os.path.splitext(filename)[0]).replace('\\', '/'))
                 # Files named 'views.py
                 for filename in filenames:
                     if filename == 'views.py':
                         # view_files.append(filename)
-                        view_file_paths.append(os.path.join(
-                                                            os.path.relpath(root),
+                        view_file_paths.append(os.path.join(os.path.relpath(root),
                                                             os.path.splitext(filename)[0]).replace('\\', '/'))
 
     return view_file_paths
@@ -61,10 +59,6 @@ def get_views(view_file_paths):
     return views
 
 
-# List for the view names found in the URLs.
-url_view_names = []
-
-
 def get_url_view_names():
     """
     Returns all the names of all the views called by the URLS.
@@ -77,22 +71,33 @@ def get_url_view_names():
                    'changelist_view', 'add_view', 'history_view', 'delete_view', 'change_view', 'RedirectView',
                    'user_change_password', 'changelist_view', 'add_view', 'history_view', 'delete_view', 'change_view',
                    'RedirectView', 'app_index']
-    get_view_names(urlpatterns, non_matches)
 
+    url_view_names = get_view_names(urlpatterns, non_matches)
     return url_view_names
 
 
-def get_view_names(urlpatterns, non_matches):
+def get_view_names(url_list, non_matches, view_names=None):
     """
-    Pulling this function out allows it to be called recursively.
+    Given a list of urlpatterns, return the names of all the views the URLs use.
+    Adapted from https://stackoverflow.com/a/1829565 and http://code.activestate.com/recipes/576974/
+    :param url_list: The urlpatterns.
+    :param non_matches: A list of view names to be excluded.
+    :param view_names: The final list of names.
+    :return:
+    """
+    if view_names is None:
+        view_names = []
+    for entry in url_list:
+        # If the entry is not a single pattern, recursively traverse the lists until we hit a single pattern.
+        if hasattr(entry, 'url_patterns'):
+            get_view_names(entry.url_patterns, non_matches, view_names)
+        # If a single pattern is not one of the non-matches, add it to our list of view names.
+        elif entry.callback.__name__ not in non_matches:
+            view_names.append(entry.callback.__name__)
 
-    :param urlpatterns: A list of URL patterns.
-    :param non_matches: View names which will be excluded.
-    """
-    for pattern in urlpatterns:
-        # If the pattern is a resolver, keep going down the chain until we get to an actual pattern
-        if isinstance(pattern, RegexURLResolver):
-            get_view_names(pattern.url_patterns, non_matches)
-        # Then, if the pattern is not excluded, add it to the list.
-        elif isinstance(pattern, RegexURLPattern) and pattern.callback.__name__ not in non_matches:
-            url_view_names.append(pattern.callback.__name__)
+    return view_names
+
+
+
+
+
