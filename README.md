@@ -36,7 +36,7 @@ The command has three basic sub commands: `templates`, `views`, and `media`
 
     python manage.py unused views
 
-**media**
+**media (currently not implemented)**
 
     python manage.py unused media
 
