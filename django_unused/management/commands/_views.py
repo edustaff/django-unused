@@ -1,4 +1,5 @@
 import time
+
 from ...unused.find_views import get_view_files, get_views, get_url_view_names
 
 
@@ -35,8 +36,3 @@ def find_unused_views():
     end = time.perf_counter()
     print('Finished in ' + str(end - start) + ' seconds.')
     return unused_views
-
-
-
-
-

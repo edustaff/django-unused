@@ -1,8 +1,83 @@
-import fileinput, time
+import fileinput
+import time
+from tempfile import TemporaryDirectory
+
+from whoosh.analysis import RegexTokenizer
+from whoosh.fields import Schema, TEXT, ID
+from whoosh.index import create_in
+from whoosh.qparser import QueryParser
+from whoosh.util.text import rcompile
+
 from ...unused.find_templates import find_py_files, find_app_templates, find_global_templates
 
 
 def find_unused_templates():
+    start = time.perf_counter()
+    print('Finding all unused templates...')
+    print('  Getting global templates...')
+    global_templates_files, global_templates = find_global_templates()
+    print('   Done.\n  Getting app templates...')
+    app_templates_files, app_templates = find_app_templates()
+    print('   Done.')
+    templates = global_templates + app_templates
+    template_files = global_templates_files + app_templates_files
+    # templates.sort()
+    template_files.sort()
+
+    print('  Getting python files...')
+    py_files, pys = find_py_files()
+    print('   Done.')
+    all_files = py_files + template_files
+
+    tl_count = [0 for t in templates]
+    unused_templates = []
+
+    print('  Creating Index', end='')
+    tmp_dir = TemporaryDirectory()
+
+    schema = Schema(title=TEXT(stored=True),
+                    path=ID(stored=True),
+                    content=TEXT(analyzer=RegexTokenizer(expression=rcompile(r"[\w/.]+"))))
+    ix = create_in(tmp_dir.name, schema)
+    writer = ix.writer()
+
+    for filename in all_files:
+        print('.', end='', flush=True)
+        with open(filename, 'r') as f:
+            writer.add_document(title=filename, path=filename,
+                                content='/n'.join(f.readlines()))
+    print('', flush=True)
+    writer.commit()
+    print('   Done.')
+
+    print('  Searching through templates for references', end='', flush=True)
+    with ix.searcher() as searcher:
+        for count, template in enumerate(templates):
+            print('.', end="", flush=True)
+            query = QueryParser("content", ix.schema).parse(template)
+            results = searcher.search(query)
+            if len(results) < 1:
+                unused_templates.append(template)
+    print('', flush=True)
+    print('   Done.')
+
+    if not unused_templates:
+        print('No unused templates found.')
+    else:
+        print('\nUnused templates:')
+        for template in unused_templates:
+            print(template)
+    end = time.perf_counter()
+    print('Finished in ' + str(end - start) + ' seconds.')
+    return unused_templates
+
+
+def find_unused_templates_whoosh():
+    """
+    Finds all templates in the project. The criteria for an unused view are:
+        1. It is not used other template.
+        2. It is not reference in any python file.
+    """
     start = time.perf_counter()
     print('Finding all unused templates...')
     print('  Getting global templates...')
