@@ -49,4 +49,5 @@ Just run tox.
 
 Just to remind myself:
 
+    python setup.py bdist_wheel --universal
     twine upload dist/*
