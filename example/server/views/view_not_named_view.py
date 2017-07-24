@@ -1,8 +1,13 @@
-from django.views.generic import ListView
+from django.views.generic import TemplateView
 
 
-class UnusedView(ListView):
+class UsedView(TemplateView):
+    template_name = 'server/used_in_view.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(UnusedView, self).get_context_data(**kwargs)
-        return context
+
+class UnusedView(TemplateView):
+    template_name = ''
+
+
+class ServerView(UsedView):
+    template_name = 'server/used_in_view.html'

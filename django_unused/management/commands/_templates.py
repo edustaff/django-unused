@@ -1,8 +1,9 @@
-import fileinput
+import fileinput, time
 from ...unused.find_templates import find_py_files, find_app_templates, find_global_templates
 
 
 def find_unused_templates():
+    start = time.perf_counter()
     print('Finding all unused templates...')
     print('  Getting global templates...')
     global_templates_files, global_templates = find_global_templates()
@@ -46,5 +47,6 @@ def find_unused_templates():
         print('\nUnused templates:')
         for template in unused_templates:
             print(template)
-
+    end = time.perf_counter()
+    print('Finished in ' + str(end - start) + ' seconds.')
     return unused_templates
