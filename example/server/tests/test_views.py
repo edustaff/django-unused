@@ -24,7 +24,6 @@ class UnusedViewTestCase(TestCase):
 
     def test_get_url_view_names(self):
         url_view_names = get_url_view_names()
-        print(url_view_names)
         self.assertEqual(url_view_names, ['ServerView', 'UsedView'])
 
     def test_find_unused_views(self):

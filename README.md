@@ -36,7 +36,7 @@ The command has three basic sub commands: `templates`, `views`, and `media`
 
     python manage.py unused views
 
-**media**
+**media (currently not implemented)**
 
     python manage.py unused media
 
@@ -49,4 +49,5 @@ Just run tox.
 
 Just to remind myself:
 
+    python setup.py bdist_wheel --universal
     twine upload dist/*

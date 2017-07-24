@@ -1,4 +1,5 @@
-import importlib, inspect, os
+import importlib, inspect, types, os
+from django.core.urlresolvers import RegexURLResolver, RegexURLPattern
 from django.views.generic import View
 from django.apps import apps
 from django.conf import settings
