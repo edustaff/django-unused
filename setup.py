@@ -6,14 +6,14 @@ from setuptools import setup, find_packages
 
 from django_unused import __version__
 
-# try:
-#     from pypandoc import convert
-# except ImportError:
-#     import io
-#
-#     def convert(filename, fmt):
-#         with io.open(filename, encoding='utf-8') as fd:
-#             return fd.read()
+try:
+    from pypandoc import convert
+except ImportError:
+    import io
+
+    def convert(filename, fmt):
+        with io.open(filename, encoding='utf-8') as fd:
+            return fd.read()
 
 DESCRIPTION = 'Finds unused templates in Django'
 
@@ -39,8 +39,8 @@ setup(
     author='Kevin Clark',
     author_email='kclark@edustaff.org',
     description=DESCRIPTION,
-    long_description=DESCRIPTION,  # convert('README.md', 'rst'),
-    # url='https://',
+    long_description=convert('README.md', 'rst'),
+    url='https://github.com/ticalcster/django-unused',
     license='MIT',
     keywords=['django', 'templates'],
     platforms=['OS Independent'],

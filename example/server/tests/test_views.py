@@ -2,6 +2,7 @@ from django.core.management import call_command
 from django.test import TestCase
 
 from django_unused.unused.find_views import get_view_files, get_views, get_url_view_names
+from django_unused.management.commands._views import find_unused_views
 
 
 class UnusedViewTestCase(TestCase):
@@ -23,7 +24,12 @@ class UnusedViewTestCase(TestCase):
 
     def test_get_url_view_names(self):
         url_view_names = get_url_view_names()
+        print(url_view_names)
         self.assertEqual(url_view_names, ['ServerView', 'UsedView'])
+
+    def test_find_unused_views(self):
+        views = find_unused_views()
+        self.assertEqual(len(views), 1)
 
     def test_run_unusedtemplates_with_no_args(self):
         call_command('unused', 'views')
