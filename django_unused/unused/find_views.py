@@ -16,9 +16,14 @@ def get_view_files():
     # Get app configs
     for config in apps.get_app_configs():
         # If the app is a user created app
+        print('config')
+        print(config, config.path)
+        print('Base', settings.BASE_DIR)
+
         if config.path.find(settings.BASE_DIR) > -1:
             for root, dirs, filenames in os.walk(config.path):
                 # files either directly inside of or in a sub dir of a 'views' directory
+                print('  FILE LOOP', root, dirs, filenames)
                 if os.path.basename(root) == 'views':
                     for sub_root, sub_dirs, sub_filenames in os.walk(root):
                         for filename in sub_filenames:

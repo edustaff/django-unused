@@ -9,6 +9,9 @@ class UnusedViewTestCase(TestCase):
     def test_get_view_files(self):
         files = get_view_files()
         print(sorted(files))
+        print(sorted(['server/views/view_not_named_view', 'server/views/__init__',
+                                 'server/views/sub/view_file', 'server/views/sub/__init__',
+                                 'app1/views']))
         self.assertEqual(sorted(files), sorted(['server/views/view_not_named_view', 'server/views/__init__',
                                  'server/views/sub/view_file', 'server/views/sub/__init__',
                                  'app1/views']))
