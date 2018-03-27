@@ -1,6 +1,18 @@
+from __future__ import print_function
+
 import fileinput
 import time
-from tempfile import TemporaryDirectory
+
+import six
+
+if six.PY2:
+    # No tempfile in PY2
+    from backports import tempfile
+    TemporaryDirectory = tempfile.TemporaryDirectory
+
+    time.perf_counter = time.clock
+else:
+    from tempfile import TemporaryDirectory
 
 from whoosh.analysis import RegexTokenizer
 from whoosh.fields import Schema, TEXT, ID
@@ -42,23 +54,23 @@ def find_unused_templates():
     writer = ix.writer()
 
     for filename in all_files:
-        print('.', end='', flush=True)
+        print('.', end='')# , flush=True)
         with open(filename, 'r') as f:
             writer.add_document(title=filename, path=filename,
                                 content='/n'.join(f.readlines()))
-    print('', flush=True)
+    print('')# , flush=True)
     writer.commit()
     print('   Done.')
 
-    print('  Searching through templates for references', end='', flush=True)
+    print('  Searching through templates for references', end='')# , flush=True)
     with ix.searcher() as searcher:
         for count, template in enumerate(templates):
-            print('.', end="", flush=True)
+            print('.', end="")# , flush=True)
             query = QueryParser("content", ix.schema).parse(template)
             results = searcher.search(query)
             if len(results) < 1:
                 unused_templates.append(template)
-    print('', flush=True)
+    print('')# , flush=True)
     print('   Done.')
 
     if not unused_templates:
@@ -97,9 +109,9 @@ def find_unused_templates_whoosh():
 
     tl_count = [0 for t in templates]
     unused_templates = []
-    print('  Searching through templates for references', end="", flush=True)
+    print('  Searching through templates for references', end="")# , flush=True)
     for index, template in enumerate(templates):
-        print('.', end="", flush=True)
+        print('.', end="")# , flush=True)
         for line in fileinput.input(all_files):  # Loops through every line of every file
             # print([template, line])
             if str.find(line, template) > -1:

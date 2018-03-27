@@ -18,7 +18,7 @@ def get_view_files():
         # If the app is a user created app
         if config.path.find(settings.BASE_DIR) > -1:
             for root, dirs, filenames in os.walk(config.path):
-                # files either directly inside or in a sub dir of a 'views' directory
+                # files either directly inside of or in a sub dir of a 'views' directory
                 if os.path.basename(root) == 'views':
                     for sub_root, sub_dirs, sub_filenames in os.walk(root):
                         for filename in sub_filenames:

@@ -8,9 +8,10 @@ from django_unused.management.commands._views import find_unused_views
 class UnusedViewTestCase(TestCase):
     def test_get_view_files(self):
         files = get_view_files()
-        self.assertEqual(files, ['server/views/view_not_named_view', 'server/views/__init__',
+        print(sorted(files))
+        self.assertEqual(sorted(files), sorted(['server/views/view_not_named_view', 'server/views/__init__',
                                  'server/views/sub/view_file', 'server/views/sub/__init__',
-                                 'app1/views'])
+                                 'app1/views']))
 
     def test_get_views(self):
         files = get_view_files()

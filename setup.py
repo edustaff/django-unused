@@ -39,7 +39,7 @@ setup(
     author_email='kclark@edustaff.org',
     description=DESCRIPTION,
     long_description=convert('README.md', 'rst'),
-    url='https://github.com/ticalcster/django-unused',
+    url='https://github.com/edustaff/django-unused',
     license='MIT',
     keywords=['django', 'templates'],
     platforms=['OS Independent'],

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import time
 
 from ...unused.find_views import get_view_files, get_views, get_url_view_names
@@ -13,7 +15,7 @@ def find_unused_views():
     print('Finding all unused views...')
     print(' Getting all view files...')
     view_file_paths = get_view_files()
-    print(' Searching for references of each view...', end='', flush=True)
+    print(' Searching for references of each view...', end='')# , flush=True)
     # Get each view
     views = get_views(view_file_paths)
     # Get the names of the views used in URLs
@@ -22,7 +24,7 @@ def find_unused_views():
     # Find each unused view
     unused_views = []
     for view in views:
-        print('.', end='', flush=True)
+        print('.', end='')# , flush=True)
 
         # If a view is not decorated with used_view, not called by a url and is not subclassed, it is unused.
         # Pulling view.__subclasses__() out of the other loop made it find all classes which subclassed view...
