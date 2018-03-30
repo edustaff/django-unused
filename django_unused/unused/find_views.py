@@ -1,8 +1,10 @@
-import importlib, inspect, types, os
-from django.core.urlresolvers import RegexURLResolver, RegexURLPattern
-from django.views.generic import View
+import importlib
+import inspect
+import os
+
 from django.apps import apps
 from django.conf import settings
+from django.views.generic import View
 
 
 def get_view_files():
@@ -86,7 +88,7 @@ def get_url_view_names():
     non_matches = ['index', 'login', 'logout', 'password_change', 'password_change_done', 'i18n_javascript', 'shortcut',
                    'changelist_view', 'add_view', 'history_view', 'delete_view', 'change_view', 'RedirectView',
                    'user_change_password', 'changelist_view', 'add_view', 'history_view', 'delete_view', 'change_view',
-                   'RedirectView', 'app_index']
+                   'RedirectView', 'app_index', 'autocomplete_view']
 
     url_view_names = get_view_names(urlpatterns, non_matches)
     return url_view_names
@@ -112,8 +114,3 @@ def get_view_names(url_list, non_matches, view_names=None):
             view_names.append(entry.callback.__name__)
 
     return view_names
-
-
-
-
-

@@ -8,7 +8,7 @@ urlpatterns = [
     # url(r'^$', 'example.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^server/', ServerView.as_view(), name='server'),
-    url(r'^used/', include('example.app1.urls', namespace='used')),
+    url(r'^used/', include('example.app1.urls')),
 ]
