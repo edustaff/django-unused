@@ -54,23 +54,34 @@ def find_unused_templates():
     writer = ix.writer()
 
     for filename in all_files:
-        print('.', end='')# , flush=True)
+        print('.', end='')  # , flush=True)
         with open(filename, 'r') as f:
-            writer.add_document(title=filename, path=filename,
-                                content='/n'.join(f.readlines()))
-    print('')# , flush=True)
+            # print('WHOOSH', filename, filename, f)
+            # content = '/n'.join(f.readlines())
+            # if content:
+            #     print('HAS CONTENT')
+            #     print(content)
+            u_filename = filename
+            try:  # Python2
+                u_filename = unicode(filename)
+            except NameError:
+                pass
+            writer.add_document(title=u_filename, path=u_filename,
+                                content=six.u('/n'.join(f.readlines())))
+                                # content=content)
+    print('')  # , flush=True)
     writer.commit()
     print('   Done.')
 
-    print('  Searching through templates for references', end='')# , flush=True)
+    print('  Searching through templates for references', end='')  # , flush=True)
     with ix.searcher() as searcher:
         for count, template in enumerate(templates):
-            print('.', end="")# , flush=True)
+            print('.', end="")  # , flush=True)
             query = QueryParser("content", ix.schema).parse(template)
             results = searcher.search(query)
             if len(results) < 1:
                 unused_templates.append(template)
-    print('')# , flush=True)
+    print('')  # , flush=True)
     print('   Done.')
 
     if not unused_templates:
@@ -109,9 +120,9 @@ def find_unused_templates_whoosh():
 
     tl_count = [0 for t in templates]
     unused_templates = []
-    print('  Searching through templates for references', end="")# , flush=True)
+    print('  Searching through templates for references', end="")  # , flush=True)
     for index, template in enumerate(templates):
-        print('.', end="")# , flush=True)
+        print('.', end="")  # , flush=True)
         for line in fileinput.input(all_files):  # Loops through every line of every file
             # print([template, line])
             if str.find(line, template) > -1:

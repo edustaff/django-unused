@@ -14,28 +14,39 @@ def get_view_files():
     # view_files = []
     view_file_paths = []
     # Get app configs
+    # print('BASE:', settings.BASE_DIR)
     for config in apps.get_app_configs():
         # If the app is a user created app
-        print('config')
-        print(config, config.path)
-        print('Base', settings.BASE_DIR)
+        # print('CONFIG:', config.name)
+        # print('  ', config)
+        # print('  ', config.path)
 
         if config.path.find(settings.BASE_DIR) > -1:
             for root, dirs, filenames in os.walk(config.path):
                 # files either directly inside of or in a sub dir of a 'views' directory
-                print('  FILE LOOP', root, dirs, filenames)
+                # print('    ', 'ROOT:', root)
+                # print('    ', 'DIRS:', dirs)
+                # print('    ', 'FILES:', filenames)
                 if os.path.basename(root) == 'views':
                     for sub_root, sub_dirs, sub_filenames in os.walk(root):
                         for filename in sub_filenames:
                             if filename.endswith('.py'):
                                 # view_files.append(filename)
-                                view_file_paths.append(os.path.join(os.path.relpath(os.path.join('../', sub_root)),
+                                # print('    --', filename)
+                                # print('      ', os.path.splitext(filename))
+                                # print('      ', os.path.splitext(filename)[0])
+                                # print('      ', sub_root)
+                                # print('      ', os.path.join('..', sub_root))
+                                # print('      ', os.path.relpath(sub_root, start=settings.BASE_DIR))
+                                # print('      ', sub_root.replace(settings.BASE_DIR, ''))
+                                # print('      ')
+                                view_file_paths.append(os.path.join(os.path.relpath(sub_root, start=settings.BASE_DIR),
                                                                     os.path.splitext(filename)[0]).replace('\\', '/'))
                 # Files named 'views.py
                 for filename in filenames:
                     if filename == 'views.py':
                         # view_files.append(filename)
-                        view_file_paths.append(os.path.join(os.path.relpath(root),
+                        view_file_paths.append(os.path.join(os.path.relpath(root, start=settings.BASE_DIR),
                                                             os.path.splitext(filename)[0]).replace('\\', '/'))
 
     return view_file_paths
