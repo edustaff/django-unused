@@ -26,10 +26,10 @@ CLASSIFIERS = [
     'Programming Language :: Python',
     'Topic :: Software Development :: Libraries :: Python Modules',
     'Development Status :: 4 - Beta',
-    'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
 ]
 
 setup(
@@ -46,4 +46,7 @@ setup(
     classifiers=CLASSIFIERS,
     packages=find_packages(exclude=['example', 'docs']),
     include_package_data=True,
+    install_requires=[
+        'whoosh==2.7.4',
+    ],
 )
