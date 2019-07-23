@@ -46,4 +46,7 @@ setup(
     classifiers=CLASSIFIERS,
     packages=find_packages(exclude=['example', 'docs']),
     include_package_data=True,
+    install_requires=[
+        'whoosh==2.7.4',
+    ],
 )
